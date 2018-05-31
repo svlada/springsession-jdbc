@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+    <property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}" />
+    <appender name="ROLLIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- <file>${LOG_FILE}</file> -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_PATH}/spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>4GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- ALL < DEBUG < INFO < WARN < ERROR < FATAL -->
+    <root level="INFO">
+        <appender-ref ref="ROLLIN" />
+    </root>
+
+    <logger name="org.springframework.web" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework.security" level="ALL" />
+    <logger name="org.springframework.security.web.access" level="ALL" />
+    <logger name="org.springframework.session" level="ALL" />
+</configuration>
