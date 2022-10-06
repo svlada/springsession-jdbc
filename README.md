@@ -1,2 +1,3 @@
-# springsession-jdbc
-Example application to show how to configure Spring Session with JDBC.
+# Spring Session JDBC Example
+
+A sample project that demonstrates how to set up Spring Session with a JDBC database.

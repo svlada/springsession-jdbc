@@ -1,6 +1,5 @@
 package com.svlada.session;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,52 +9,50 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
-/**
- * WebSecurityConfig
- *
- * @author vladimir.stankovic@vicert.com
- */
 @Configuration
 @EnableWebSecurity
 @EnableJdbcHttpSession
-public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final AuthenticationProvider provider;
 
-    public WebSecurityConfig(final RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-        final AuthenticationProvider provider) {
+    public WebSecurityConfig(
+            final RestAuthenticationEntryPoint restAuthenticationEntryPoint, final AuthenticationProvider provider) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.provider = provider;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(restAuthenticationEntryPoint)
-            .and()
+        http.csrf()
+                .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and()
                 .formLogin()
                 .successHandler(new SessionAuthenticationSuccessHandler())
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
-            .and()
+                .and()
                 .logout()
-                    .defaultLogoutSuccessHandlerFor(new HttpStatusReturningLogoutSuccessHandler(),
-                        new AntPathRequestMatcher("/logout"))
-            .and()
+                .defaultLogoutSuccessHandlerFor(
+                        new HttpStatusReturningLogoutSuccessHandler(), new AntPathRequestMatcher("/logout"))
+                .and()
                 .authorizeRequests()
-                    .antMatchers("/login").permitAll()
-                    .antMatchers("/h2/**").permitAll()
-            .and()
-                .authorizeRequests().antMatchers("/api/**").hasAnyRole("ADMIN")
-            .and()
+                .antMatchers("/login")
+                .permitAll()
+                .antMatchers("/h2/**")
+                .permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/**")
+                .hasAnyRole("ADMIN")
+                .and()
                 .requestCache()
                 .requestCache(new NullRequestCache());
     }

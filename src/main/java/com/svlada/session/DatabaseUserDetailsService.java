@@ -1,7 +1,5 @@
 package com.svlada.session;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,11 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-/**
- * DatabaseUserDetailsService
- *
- * @author vladimir.stankovic@vicert.com
- */
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class DatabaseUserDetailsService implements UserDetailsService {
     @Override
